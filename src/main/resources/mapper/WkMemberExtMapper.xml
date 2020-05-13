@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunday.wkday.dao.WkMemberExtMapper">
+  <resultMap id="BaseResultMap" type="com.sunday.wkday.entity.WkMemberExt">
+    <constructor>
+      <arg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="project_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="avatar_url" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ProResultMap" type="com.sunday.wkday.entity.WkMemberProjectExt">
+    <constructor>
+      <arg column="project_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="project_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="project_admin" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sub_admin" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="project_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ProResultMap2" type="com.sunday.wkday.entity.WkMemberProjectDetailExt">
+    <constructor>
+      <arg column="project_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="project_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="project_admin" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sub_admin" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="project_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+
+  <select id="selectMemberDetail" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select m.project_no, m.user_id, u.avatar_url, u.user_name
+    from wk_member m
+    left join wk_user u on m.user_id=u.user_id
+    where m.project_no = #{projectNo,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectBatchMemberDetail" resultMap="BaseResultMap">
+    select m.project_no, m.user_id, u.avatar_url, u.user_name
+    from wk_member m
+    left join wk_user u on m.user_id=u.user_id
+    where m.project_no IN
+    <foreach collection="projectNoList" item="listItem" open="(" close=")" separator="," >
+      #{listItem,jdbcType=VARCHAR}
+    </foreach>
+  </select>
+
+  <select id="selectProjectDetail" resultMap="ProResultMap">
+    select distinct(p.project_no), p.project_name, p.id as project_id, p.project_admin, p.sub_admin
+    from wk_project p left join wk_member m on m.project_no=p.project_no
+    where p.project_status!=-1 and (m.user_id=#{userId,jdbcType=VARCHAR} or p.project_admin=#{userId,jdbcType=VARCHAR} )
+    <if test="minId !=null">
+      and p.id &lt; #{minId,jdbcType=INTEGER}
+    </if>
+    order by p.id desc
+    limit #{step,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectProjectDetailByNo" resultMap="ProResultMap2">
+    select p.project_no, p.project_name, p.id as project_id, p.project_admin, p.create_time, m.user_id, p.sub_admin
+    from wk_project p left join wk_member m on m.project_no=p.project_no
+    where p.project_no=#{projectNo,jdbcType=VARCHAR}
+  </select>
+
+
+</mapper>
