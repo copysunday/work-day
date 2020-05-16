@@ -59,7 +59,8 @@
 <!--        <table tableName="wk_user" domainObjectName="WkUser"></table>-->
 <!--        <table tableName="wk_record" domainObjectName="WkRecord"></table>-->
 <!--        <table tableName="wk_op_log" domainObjectName="WkOpLog"></table>-->
-        <table tableName="wk_project" domainObjectName="WkProject"></table>
+<!--        <table tableName="wk_project" domainObjectName="WkProject"></table>-->
+        <table tableName="wk_diary" domainObjectName="WkDiary"></table>
 <!--        <table tableName="wk_member" domainObjectName="WkMember"></table>-->
     </context>
 </generatorConfiguration>
