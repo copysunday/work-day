@@ -82,6 +82,7 @@ public class DiaryServiceImpl implements DiaryService {
                     diaryDetailVO.setDiary(wkDiary.getDiary());
                     diaryDetailVO.setDiaryNo(wkDiary.getDiaryNo());
                     diaryDetailVO.setWkDate(wkDiary.getWkDate());
+                    diaryDetailVO.setCreateTime(DateUtil.getDateTime(wkDiary.getCreateTime()));
                     return diaryDetailVO;
                 }).collect(Collectors.toList())
         ).collect(Collectors.toList());

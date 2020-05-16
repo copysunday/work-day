@@ -12,4 +12,5 @@ public class DiaryDetailVO {
     private String diaryNo;
     private String diary;
     private String wkDate;
+    private String createTime;
 }
