@@ -15,6 +15,7 @@ import com.sunday.wkday.util.RandomUtil;
 import com.sunday.wkday.vo.DeleteProjectReqVO;
 import com.sunday.wkday.vo.QuitProjectReq;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -169,18 +170,39 @@ public class WkProjectServiceImpl implements WkProjectService {
             }
             return res > 0;
         } catch (DuplicateKeyException e) {
-            log.info("重复提交：{}", req);
-            return true;
+            log.info("重新加入项目：{}", req);
+            WkMember wkMemberUpdate = new WkMember();
+            wkMember.setUserType((byte) 0);
+            WkMemberExample wkMemberExample = new WkMemberExample();
+            wkMemberExample.createCriteria().andProjectNoEqualTo(req.getProjectNo())
+                    .andUserIdEqualTo(req.getUserId());
+            return wkMemberMapper.updateByExampleSelective(wkMemberUpdate, wkMemberExample) > 0;
         }
     }
 
     @Override
     public boolean quitProject(QuitProjectReq req) {
+        WkProject project = getProject(req.getProjectNo());
+        if (project == null) {
+            throw new BaseException("项目不存在：" + req.getProjectNo());
+        }
+        String targetUserId;
+        byte targetUserType;
+        if (StringUtils.isBlank(req.getTargetUserId())) {
+            targetUserId = req.getUserId();
+            targetUserType = 2;
+        } else {
+            if (!project.getProjectAdmin().equals(req.getUserId())) {
+                throw new BaseException("非管理员不允许操作");
+            }
+            targetUserId = req.getTargetUserId();
+            targetUserType = 1;
+        }
         WkMember wkMember = new WkMember();
-        wkMember.setUserType((byte) 1);
+        wkMember.setUserType(targetUserType);
         WkMemberExample wkMemberExample = new WkMemberExample();
         wkMemberExample.createCriteria().andProjectNoEqualTo(req.getProjectNo())
-                .andUserIdEqualTo(req.getTargetUserId());
+                .andUserIdEqualTo(targetUserId);
         return wkMemberMapper.updateByExampleSelective(wkMember, wkMemberExample) > 0;
     }
 

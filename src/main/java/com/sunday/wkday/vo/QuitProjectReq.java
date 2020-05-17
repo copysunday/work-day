@@ -16,7 +16,6 @@ public class QuitProjectReq extends BaseReq {
     /**
      * 目标用户
      */
-    @NotBlank(message = "targetUserId不能为空")
     private String targetUserId;
 
 }

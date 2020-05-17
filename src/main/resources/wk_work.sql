@@ -25,7 +25,7 @@ CREATE TABLE `wk_member` (
   `id` bigint(9) NOT NULL AUTO_INCREMENT,
   `user_id` varchar(32) DEFAULT NULL,
   `project_no` varchar(32) DEFAULT NULL,
-  `user_type` tinyint(4) unsigned zerofill DEFAULT NULL COMMENT '0申请中 1观察者 2管理员',
+  `user_type` tinyint(4) unsigned zerofill DEFAULT NULL COMMENT '0项目成员 1观察员 2已退出',
   `create_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unq_uid_pjno` (`user_id`,`project_no`),
