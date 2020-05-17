@@ -12,7 +12,6 @@ public class GetMonthRecordsReqVO extends BaseReq {
     /**
      * 查询的userId
      */
-    @NotBlank(message = "uid不能为空")
     private String queryUserId;
     /**
      * 项目ID

@@ -69,29 +69,8 @@ public class RecordController extends AbstractController {
     @RequestMapping(value = "/getRecordList", method = RequestMethod.POST)
     @ResponseBody
     public BaseResult<List<RecordVO>> getRecordList(@RequestBody @Valid GetRecordListReqVO req) {
-        List<WkRecord> wkRecords = wkRecordService.getWkRecord(req.getProjectNo(), req.getWkDate());
-        List<RecordVO> recordList = new ArrayList<>();
-        if (CollectionUtils.isEmpty(wkRecords)) {
-            return ResponseBuilder.success(recordList);
-        }
-        List<String> userIdList = wkRecords.stream().map(WkRecord::getUserId).collect(Collectors.toList());
-        Map<String, WkUser> userMap = wkUserService.getUserMap(userIdList);
-        for (WkRecord wkRecord: wkRecords) {
-            RecordVO recordVO = new RecordVO();
-            WkUser wkUser = userMap.get(wkRecord.getUserId());
-            if (wkUser != null) {
-                recordVO.setAvatarUrl(wkUser.getAvatarUrl());
-                recordVO.setUserName(wkUser.getUserName());
-            }
-            recordVO.setUserId(wkRecord.getUserId());
-            recordVO.setRemark(wkRecord.getRemark());
-            recordVO.setWkHour(NumberUtil.formatNum(wkRecord.getWkHour(), 1));
-            long wkHour = wkRecord.getWkHour().longValue();
-            Float rate = wkHour >= 8 ? 100f : wkHour / 8f * 100;
-            recordVO.setRate(rate);
-            recordList.add(recordVO);
-        }
-        return ResponseBuilder.success(recordList);
+
+        return ResponseBuilder.success(wkRecordService.getRecordList(req));
     }
 
     /**
