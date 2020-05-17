@@ -3,6 +3,7 @@ package com.sunday.wkday.service;
 import com.sunday.wkday.entity.WkRecord;
 import com.sunday.wkday.service.dto.CreateRecordReq;
 import com.sunday.wkday.service.dto.GetAllMonthRecordResp;
+import com.sunday.wkday.service.dto.GetMonthRecordsReq;
 import com.sunday.wkday.service.dto.GetMonthRecordsResp;
 import com.sunday.wkday.vo.*;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +38,7 @@ public interface WkRecordService {
      * 个人月记录
      * @return
      */
-    GetMonthRecordsRespVO getMonthRecords(GetMonthRecordsReqVO req);
+    GetMonthRecordsRespVO getMonthRecords(GetMonthRecordsReq req);
 
     /**
      *

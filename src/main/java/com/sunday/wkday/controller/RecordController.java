@@ -4,10 +4,7 @@ import com.sunday.wkday.entity.WkRecord;
 import com.sunday.wkday.entity.WkUser;
 import com.sunday.wkday.service.WkRecordService;
 import com.sunday.wkday.service.WkUserService;
-import com.sunday.wkday.service.dto.CreateRecordReq;
-import com.sunday.wkday.service.dto.GetAllMonthRecordResp;
-import com.sunday.wkday.service.dto.GetMonthRecordsResp;
-import com.sunday.wkday.service.dto.RecordDetail;
+import com.sunday.wkday.service.dto.*;
 import com.sunday.wkday.util.NumberUtil;
 import com.sunday.wkday.util.ResponseBuilder;
 import com.sunday.wkday.vo.*;
@@ -81,8 +78,13 @@ public class RecordController extends AbstractController {
     @RequestMapping(value = "/getMonthRecords", method = RequestMethod.POST)
     @ResponseBody
     public BaseResult<GetMonthRecordsRespVO> getMonthRecords(@RequestBody @Valid GetMonthRecordsReqVO req) {
-        req.setUserId(getUserId(req.getUserToken()));
-        return ResponseBuilder.success(wkRecordService.getMonthRecords(req));
+        GetMonthRecordsReq getMonthRecordsReq = new GetMonthRecordsReq();
+        getMonthRecordsReq.setUserId(getUserId(req.getUserToken()));
+        getMonthRecordsReq.setQueryUserId(req.getUserId());
+        getMonthRecordsReq.setProjectNo(req.getProjectNo());
+        getMonthRecordsReq.setYear(req.getYear());
+        getMonthRecordsReq.setMonth(req.getMonth());
+        return ResponseBuilder.success(wkRecordService.getMonthRecords(getMonthRecordsReq));
     }
 
     /**

@@ -158,7 +158,7 @@ public class WkRecordServiceImpl implements WkRecordService {
     }
 
     @Override
-    public GetMonthRecordsRespVO getMonthRecords(GetMonthRecordsReqVO req) {
+    public GetMonthRecordsRespVO getMonthRecords(GetMonthRecordsReq req) {
         WkRecordExample example = new WkRecordExample();
         WkRecordExample.Criteria criteria = example.createCriteria();
         Date date = DateUtil.parseDate(req.getYear() + "-" + req.getMonth() + "-01");

@@ -8,11 +8,17 @@ import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 @Data
-public class GetMonthRecordsReqVO extends BaseReq {
+public class GetMonthRecordsReqVO {
+    /**
+     * 操作人token
+     */
+    @NotBlank
+    private String userToken;
     /**
      * 查询的userId
      */
-    private String queryUserId;
+    @NotBlank
+    private String userId;
     /**
      * 项目ID
      */

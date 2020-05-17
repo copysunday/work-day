@@ -5,9 +5,8 @@ import com.sunday.wkday.entity.WkRecord;
 import com.sunday.wkday.service.DiaryService;
 import com.sunday.wkday.service.WkRecordService;
 import com.sunday.wkday.service.dto.GetAllMonthRecordResp;
-import com.sunday.wkday.vo.AddDiaryReqVO;
-import com.sunday.wkday.vo.QueryDiaryReqVO;
-import com.sunday.wkday.vo.QueryDiaryRespVO;
+import com.sunday.wkday.service.dto.GetMonthRecordsReq;
+import com.sunday.wkday.vo.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,5 +46,13 @@ class WkRecordServiceImplTest {
         queryDiaryReqVO.setProjectNo("1233333");
         QueryDiaryRespVO queryDiaryRespVO = diaryService.queryDiary(queryDiaryReqVO);
         System.out.println(queryDiaryRespVO);
+    }
+
+    @Test
+    void testMonth() {
+        String s = "{\"userToken\":\"2479c9e44f9642ef9e2cc7b4aa2bafa6\",\"userId\":\"2d018a15eaa14ee3b81f1e7d2ae211fb\",\"year\":\"2020\",\"month\":\"5\",\"projectNo\":\"19de4b2a6a144ff885be341231d628d6\"}";
+        GetMonthRecordsReq getMonthRecordsReqVO = JSON.parseObject(s, GetMonthRecordsReq.class);
+        GetMonthRecordsRespVO monthRecords = wkRecordService.getMonthRecords(getMonthRecordsReqVO);
+        System.out.println(monthRecords);
     }
 }
