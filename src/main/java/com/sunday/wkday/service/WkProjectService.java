@@ -6,6 +6,7 @@ import com.sunday.wkday.service.dto.CreateProjectReq;
 import com.sunday.wkday.service.dto.GetProjectListReq;
 import com.sunday.wkday.service.dto.JoinProjectReq;
 import com.sunday.wkday.service.dto.ProjectDetail;
+import com.sunday.wkday.vo.QuitProjectReq;
 
 import java.util.List;
 
@@ -39,6 +40,8 @@ public interface WkProjectService {
      * @return
      */
     boolean joinProject(JoinProjectReq req);
+
+    boolean quitProject(QuitProjectReq req);
 
 
     boolean setSubAdmin(String userId, String projectNo, String subAdmin, Integer adminSetFlag);

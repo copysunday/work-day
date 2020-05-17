@@ -70,6 +70,12 @@ public class ProjectController extends AbstractController {
         return ResponseBuilder.success(result);
     }
 
+    @RequestMapping(value = "/quitProject", method = RequestMethod.POST)
+    public BaseResult<Boolean> quitProject(@RequestBody @Valid QuitProjectReq req) {
+        req.setUserId(getUserId(req.getUserToken()));
+        return ResponseBuilder.success(wkProjectService.quitProject(req));
+    }
+
     /**
      * 查询个人所有项目
      * @param req

@@ -12,6 +12,7 @@ import com.sunday.wkday.service.dto.*;
 import com.sunday.wkday.util.DataUtil;
 import com.sunday.wkday.util.DateUtil;
 import com.sunday.wkday.util.RandomUtil;
+import com.sunday.wkday.vo.QuitProjectReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -169,6 +170,16 @@ public class WkProjectServiceImpl implements WkProjectService {
             log.info("重复提交：{}", req);
             return true;
         }
+    }
+
+    @Override
+    public boolean quitProject(QuitProjectReq req) {
+        WkMember wkMember = new WkMember();
+        wkMember.setUserType((byte) 1);
+        WkMemberExample wkMemberExample = new WkMemberExample();
+        wkMemberExample.createCriteria().andProjectNoEqualTo(req.getProjectNo())
+                .andUserIdEqualTo(req.getTargetUserId());
+        return wkMemberMapper.updateByExample(wkMember, wkMemberExample) > 0;
     }
 
     @Override
