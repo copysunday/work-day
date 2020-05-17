@@ -179,7 +179,7 @@ public class WkProjectServiceImpl implements WkProjectService {
         WkMemberExample wkMemberExample = new WkMemberExample();
         wkMemberExample.createCriteria().andProjectNoEqualTo(req.getProjectNo())
                 .andUserIdEqualTo(req.getTargetUserId());
-        return wkMemberMapper.updateByExample(wkMember, wkMemberExample) > 0;
+        return wkMemberMapper.updateByExampleSelective(wkMember, wkMemberExample) > 0;
     }
 
     @Override
