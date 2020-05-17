@@ -12,6 +12,7 @@ import com.sunday.wkday.service.dto.*;
 import com.sunday.wkday.util.DataUtil;
 import com.sunday.wkday.util.DateUtil;
 import com.sunday.wkday.util.RandomUtil;
+import com.sunday.wkday.vo.DeleteProjectReqVO;
 import com.sunday.wkday.vo.QuitProjectReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,6 +182,17 @@ public class WkProjectServiceImpl implements WkProjectService {
         wkMemberExample.createCriteria().andProjectNoEqualTo(req.getProjectNo())
                 .andUserIdEqualTo(req.getTargetUserId());
         return wkMemberMapper.updateByExampleSelective(wkMember, wkMemberExample) > 0;
+    }
+
+    @Override
+    public boolean deleteProject(DeleteProjectReqVO req) {
+        WkProjectExample wkProjectExample = new WkProjectExample();
+        WkProjectExample.Criteria criteria = wkProjectExample.createCriteria();
+        criteria.andProjectNoEqualTo(req.getProjectNo());
+
+        WkProject wkProject = new WkProject();
+        wkProject.setProjectStatus((byte) -1);
+        return wkProjectMapper.updateByExampleSelective(wkProject, wkProjectExample) > 0;
     }
 
     @Override

@@ -76,6 +76,12 @@ public class ProjectController extends AbstractController {
         return ResponseBuilder.success(wkProjectService.quitProject(req));
     }
 
+    @RequestMapping(value = "/deleteProject", method = RequestMethod.POST)
+    public BaseResult<Boolean> deleteProject(@RequestBody @Valid DeleteProjectReqVO req) {
+        req.setUserId(getUserId(req.getUserToken()));
+        return ResponseBuilder.success(wkProjectService.deleteProject(req));
+    }
+
     /**
      * 查询个人所有项目
      * @param req
