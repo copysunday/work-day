@@ -99,7 +99,8 @@ public class WkProjectServiceImpl implements WkProjectService {
             return null;
         }
         List<MemberDetail> memberDetails = new ArrayList<>();
-        List<String> userIdList = wkProjects.stream().filter(o -> o.getUserId() !=null)
+        List<String> userIdList = wkProjects.stream()
+                .filter(o -> o.getUserId() !=null && o.getUserType().equals((byte) 0))
                 .map(WkMemberProjectDetailExt::getUserId).collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(userIdList)) {
             Map<String, WkUser> userMap = wkUserService.getUserMap(userIdList);

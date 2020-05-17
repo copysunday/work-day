@@ -26,6 +26,8 @@ public class WkMemberProjectDetailExt {
 
     private String userId;
 
+    private Byte userType;
+
     private Date createTime;
 
 

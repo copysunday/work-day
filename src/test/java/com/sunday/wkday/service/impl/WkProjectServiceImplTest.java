@@ -1,6 +1,7 @@
 package com.sunday.wkday.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.sunday.wkday.controller.AbstractController;
 import com.sunday.wkday.dao.WkMemberExtMapper;
 import com.sunday.wkday.entity.WkMemberExt;
 import com.sunday.wkday.entity.WkMemberProjectExt;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-public class WkProjectServiceImplTest {
+public class WkProjectServiceImplTest extends AbstractController {
     @Autowired
     private WkProjectService wkProjectService;
     @Autowired
@@ -69,7 +70,9 @@ public class WkProjectServiceImplTest {
 
     @Test
     void getPjDetail() {
-        ProjectDetail projectDetail = wkProjectService.getProjectDetail("","85c4aa5f6c5b4c789399453653ac309f");
+        // {"userToken":"16613479542f4b189f87b910e00a4497","projectNo":"ac6a88068f3a4eeaa32f5b1e5dfa6386"}
+        String userId = getUserId("16613479542f4b189f87b910e00a4497");
+        ProjectDetail projectDetail = wkProjectService.getProjectDetail(userId,"ac6a88068f3a4eeaa32f5b1e5dfa6386");
         System.out.println(projectDetail);
     }
 }
