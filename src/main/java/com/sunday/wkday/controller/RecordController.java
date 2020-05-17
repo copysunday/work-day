@@ -102,13 +102,8 @@ public class RecordController extends AbstractController {
     @RequestMapping(value = "/getMonthRecords", method = RequestMethod.POST)
     @ResponseBody
     public BaseResult<GetMonthRecordsRespVO> getMonthRecords(@RequestBody @Valid GetMonthRecordsReqVO req) {
-        WkUser wkUser = getUser(req.getUserToken());
-        GetMonthRecordsResp monthRecords = wkRecordService.getMonthRecords(req.getProjectNo(), wkUser.getUserId(), req.getUserId(), req.getYear(), req.getMonth());
-        GetMonthRecordsRespVO resp = new GetMonthRecordsRespVO();
-        resp.setSumMonthHour(monthRecords.getSumMonthHour());
-        resp.setHourMap(monthRecords.getHourMap());
-        resp.setRemarkMap(monthRecords.getRemarkMap());
-        return ResponseBuilder.success(resp);
+        req.setUserId(getUserId(req.getUserToken()));
+        return ResponseBuilder.success(wkRecordService.getMonthRecords(req));
     }
 
     /**

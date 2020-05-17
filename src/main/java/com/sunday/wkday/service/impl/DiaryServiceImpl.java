@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -64,11 +62,12 @@ public class DiaryServiceImpl implements DiaryService {
         wkDiaryExample.setOrderByClause("wk_date desc");
 
         QueryDiaryRespVO resp = new QueryDiaryRespVO();
-
+        Map<Integer, String> diaryMap = new HashMap<>();
         List<WkDiary> wkDiaries = wkDiaryMapper.selectByExample(wkDiaryExample);
         if (CollectionUtils.isEmpty(wkDiaries)) {
             resp.setWkDateList(new ArrayList<>());
             resp.setDiaryLists(new ArrayList<>());
+            resp.setDiaryMap(diaryMap);
         }
         List<String> wkDateList = wkDiaries.stream()
                 .map(WkDiary::getWkDate)
@@ -87,8 +86,15 @@ public class DiaryServiceImpl implements DiaryService {
                 }).collect(Collectors.toList())
         ).collect(Collectors.toList());
 
+        dayRecordDetailLists.forEach(list -> {
+            DiaryDetailVO diaryDetailVO = list.get(0);
+            int day = Integer.parseInt(diaryDetailVO.getWkDate().substring(8));
+            diaryMap.put(day, diaryDetailVO.getDiary());
+        });
+
         resp.setDiaryLists(dayRecordDetailLists);
         resp.setWkDateList(wkDateList);
+        resp.setDiaryMap(diaryMap);
         return resp;
     }
 }

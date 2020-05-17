@@ -4,6 +4,8 @@ import com.sunday.wkday.entity.WkRecord;
 import com.sunday.wkday.service.dto.CreateRecordReq;
 import com.sunday.wkday.service.dto.GetAllMonthRecordResp;
 import com.sunday.wkday.service.dto.GetMonthRecordsResp;
+import com.sunday.wkday.vo.GetMonthRecordsReqVO;
+import com.sunday.wkday.vo.GetMonthRecordsRespVO;
 
 import java.util.List;
 
@@ -25,13 +27,9 @@ public interface WkRecordService {
 
     /**
      * 个人月记录
-     * @param projectNo
-     * @param userId
-     * @param year
-     * @param month
      * @return
      */
-    GetMonthRecordsResp getMonthRecords(String projectNo, String loginUserId, String userId, Integer year, Integer month);
+    GetMonthRecordsRespVO getMonthRecords(GetMonthRecordsReqVO req);
 
     /**
      *

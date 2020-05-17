@@ -8,18 +8,12 @@ import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 @Data
-public class GetMonthRecordsReqVO {
-    /**
-     * 登陆token，换取userId
-     */
-    @NotBlank(message = "token不能为空")
-    private String userToken;
-
+public class GetMonthRecordsReqVO extends BaseReq {
     /**
      * 查询的userId
      */
     @NotBlank(message = "uid不能为空")
-    private String userId;
+    private String queryUserId;
     /**
      * 项目ID
      */
