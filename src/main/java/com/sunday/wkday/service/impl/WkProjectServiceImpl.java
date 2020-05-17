@@ -172,9 +172,10 @@ public class WkProjectServiceImpl implements WkProjectService {
         } catch (DuplicateKeyException e) {
             log.info("重新加入项目：{}", req);
             WkMember wkMemberUpdate = new WkMember();
-            wkMember.setUserType((byte) 0);
+            wkMemberUpdate.setUserType((byte) 0);
             WkMemberExample wkMemberExample = new WkMemberExample();
-            wkMemberExample.createCriteria().andProjectNoEqualTo(req.getProjectNo())
+            wkMemberExample.createCriteria()
+                    .andProjectNoEqualTo(req.getProjectNo())
                     .andUserIdEqualTo(req.getUserId());
             return wkMemberMapper.updateByExampleSelective(wkMemberUpdate, wkMemberExample) > 0;
         }
@@ -203,7 +204,18 @@ public class WkProjectServiceImpl implements WkProjectService {
         WkMemberExample wkMemberExample = new WkMemberExample();
         wkMemberExample.createCriteria().andProjectNoEqualTo(req.getProjectNo())
                 .andUserIdEqualTo(targetUserId);
-        return wkMemberMapper.updateByExampleSelective(wkMember, wkMemberExample) > 0;
+        boolean res = wkMemberMapper.updateByExampleSelective(wkMember, wkMemberExample) > 0;
+        if (res) {
+            WkUser user = wkUserService.getUserByUserId(targetUserId);
+            String desc = targetUserType == 2 ? user.getUserName() + " 退出项目" : "管理员把[" + user.getUserName() + "]移出项目";
+            AddOpLogReq addOpLogReq = new AddOpLogReq();
+            addOpLogReq.setProjectNo(req.getProjectNo());
+            addOpLogReq.setOpType(2);
+            addOpLogReq.setOpUserId(req.getUserId());
+            addOpLogReq.setDetail(desc);
+            wkOpLogService.addOpLog(addOpLogReq);
+        }
+        return res;
     }
 
     @Override
@@ -214,7 +226,16 @@ public class WkProjectServiceImpl implements WkProjectService {
 
         WkProject wkProject = new WkProject();
         wkProject.setProjectStatus((byte) -1);
-        return wkProjectMapper.updateByExampleSelective(wkProject, wkProjectExample) > 0;
+        boolean res = wkProjectMapper.updateByExampleSelective(wkProject, wkProjectExample) > 0;
+        if (res) {
+            AddOpLogReq addOpLogReq = new AddOpLogReq();
+            addOpLogReq.setProjectNo(req.getProjectNo());
+            addOpLogReq.setOpType(3);
+            addOpLogReq.setOpUserId(req.getUserId());
+            addOpLogReq.setDetail(req.getUserName() + " 删除项目");
+            wkOpLogService.addOpLog(addOpLogReq);
+        }
+        return res;
     }
 
     @Override

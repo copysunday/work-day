@@ -72,13 +72,13 @@ public class ProjectController extends AbstractController {
 
     @RequestMapping(value = "/quitProject", method = RequestMethod.POST)
     public BaseResult<Boolean> quitProject(@RequestBody @Valid QuitProjectReq req) {
-        req.setUserId(getUserId(req.getUserToken()));
+        checkAndSetUserInfo(req);
         return ResponseBuilder.success(wkProjectService.quitProject(req));
     }
 
     @RequestMapping(value = "/deleteProject", method = RequestMethod.POST)
     public BaseResult<Boolean> deleteProject(@RequestBody @Valid DeleteProjectReqVO req) {
-        req.setUserId(getUserId(req.getUserToken()));
+        checkAndSetUserInfo(req);
         return ResponseBuilder.success(wkProjectService.deleteProject(req));
     }
 

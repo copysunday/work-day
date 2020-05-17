@@ -52,8 +52,8 @@ public class WkProjectServiceImplTest extends AbstractController {
     @Test
     void testJoin() throws BaseException {
         JoinProjectReq joinProjectReq = new JoinProjectReq();
-        joinProjectReq.setProjectNo("pj123");
-        joinProjectReq.setUserId("2342342343");
+        joinProjectReq.setProjectNo("d38c68d55e8744c09764c879c197a78a");
+        joinProjectReq.setUserId("2d018a15eaa14ee3b81f1e7d2ae211fb");
         boolean res = wkProjectService.joinProject(joinProjectReq);
         System.out.println(res);
     }

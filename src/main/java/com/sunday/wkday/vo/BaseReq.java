@@ -15,6 +15,13 @@ public class BaseReq {
      */
     @NotBlank
     private String userToken;
-
+    /**
+     * 登陆后写入
+     */
     private String userId;
+    /**
+     * 登陆后写入
+     */
+    private String userName;
+
 }
