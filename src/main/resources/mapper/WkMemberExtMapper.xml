@@ -51,7 +51,7 @@
   <select id="selectProjectDetail" resultMap="ProResultMap">
     select distinct(p.project_no), p.project_name, p.id as project_id, p.project_admin, p.sub_admin
     from wk_project p left join wk_member m on m.project_no=p.project_no
-    where p.project_status!=-1 and m.user_type in (0, 1)
+    where p.project_status in (0, 1) and m.user_type in (0, 1)
     and (m.user_id=#{userId,jdbcType=VARCHAR} or p.project_admin=#{userId,jdbcType=VARCHAR} )
     <if test="minId !=null">
       and p.id &lt; #{minId,jdbcType=INTEGER}

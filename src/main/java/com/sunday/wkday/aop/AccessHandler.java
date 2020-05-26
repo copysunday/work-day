@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccessHandler {
 
-    @Around("execution(public * com.sunday.wkday.web.*.*(..))")
+    @Around("execution(public * com.sunday.wkday.controller.*.*(..))")
     public Object payQueryServicePoincut(ProceedingJoinPoint joinPoint) throws Throwable {
         String className =joinPoint.getTarget().getClass().getSimpleName();
         String method = joinPoint.getSignature().getName();
