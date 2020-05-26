@@ -100,13 +100,18 @@ public class WkProjectServiceImpl implements WkProjectService {
         if (CollectionUtils.isEmpty(wkProjects)) {
             return null;
         }
+        List<WkMemberProjectDetailExt> wkProjectReal = wkProjects.stream().filter(o -> o.getUserId() != null && !o.getUserType().equals((byte) 2))
+                .collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(wkProjectReal)) {
+            return null;
+        }
         List<MemberDetail> memberDetails = new ArrayList<>();
-        List<String> userIdList = wkProjects.stream()
+        List<String> userIdList = wkProjectReal.stream()
                 .filter(o -> o.getUserId() !=null && o.getUserType().equals((byte) 0))
                 .map(WkMemberProjectDetailExt::getUserId).collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(userIdList)) {
             Map<String, WkUser> userMap = wkUserService.getUserMap(userIdList);
-            for (WkMemberProjectDetailExt wkProject : wkProjects) {
+            for (WkMemberProjectDetailExt wkProject : wkProjectReal) {
                 WkUser wkUser = userMap.get(wkProject.getUserId());
                 if (wkUser != null) {
                     MemberDetail memberDetail = new MemberDetail();
@@ -118,7 +123,7 @@ public class WkProjectServiceImpl implements WkProjectService {
             }
         }
 
-        WkMemberProjectDetailExt wkProject = wkProjects.get(0);
+        WkMemberProjectDetailExt wkProject = wkProjectReal.get(0);
         ProjectDetail projectDetail = new ProjectDetail();
         projectDetail.setProjectAdmin(wkProject.getProjectAdmin());
         projectDetail.setProjectName(wkProject.getProjectName());

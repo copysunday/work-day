@@ -64,7 +64,7 @@
   <select id="selectProjectDetailByNo" resultMap="ProResultMap2">
     select p.project_no, p.project_name, p.id as project_id, p.project_admin, p.create_time, m.user_id, p.sub_admin, m.user_type
     from wk_project p left join wk_member m on m.project_no=p.project_no
-    where p.project_no=#{projectNo,jdbcType=VARCHAR} and m.user_type in (0, 1)
+    where p.project_no=#{projectNo,jdbcType=VARCHAR}
   </select>
 
 
