@@ -100,7 +100,7 @@ public class WkProjectServiceImpl implements WkProjectService {
         if (CollectionUtils.isEmpty(wkProjects)) {
             return null;
         }
-        List<WkMemberProjectDetailExt> wkProjectReal = wkProjects.stream().filter(o -> o.getUserId() != null && !o.getUserType().equals((byte) 2))
+        List<WkMemberProjectDetailExt> wkProjectReal = wkProjects.stream().filter(o -> o.getUserId() == null || !o.getUserType().equals((byte) 2))
                 .collect(Collectors.toList());
         if (CollectionUtils.isEmpty(wkProjectReal)) {
             return null;
@@ -112,6 +112,9 @@ public class WkProjectServiceImpl implements WkProjectService {
         if (!CollectionUtils.isEmpty(userIdList)) {
             Map<String, WkUser> userMap = wkUserService.getUserMap(userIdList);
             for (WkMemberProjectDetailExt wkProject : wkProjectReal) {
+                if (wkProject.getUserId() == null) {
+                    continue;
+                }
                 WkUser wkUser = userMap.get(wkProject.getUserId());
                 if (wkUser != null) {
                     MemberDetail memberDetail = new MemberDetail();
