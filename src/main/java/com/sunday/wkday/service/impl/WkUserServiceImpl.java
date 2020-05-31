@@ -72,7 +72,7 @@ public class WkUserServiceImpl implements WkUserService {
             loginResp.setExpireTime(wkUser.getExpireTime().getTime());
             loginResp.setUserToken(wkUser.getUserToken());
             // 登记了姓名才为注册
-            loginResp.setHasRegister(StringUtils.isNotBlank(wkUser.getUserName()));
+            loginResp.setHasRegister(StringUtils.isNotBlank(wkUserOld.getUserName()));
             return loginResp;
         }
         // 新注册

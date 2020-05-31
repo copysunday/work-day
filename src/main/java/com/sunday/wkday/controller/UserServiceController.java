@@ -1,4 +1,4 @@
-package com.sunday.wkday.web;
+package com.sunday.wkday.controller;
 
 import com.sunday.wkday.enums.BaseErrorCode;
 import com.sunday.wkday.service.WkUserService;

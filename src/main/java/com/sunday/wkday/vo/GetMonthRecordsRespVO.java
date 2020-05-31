@@ -6,6 +6,8 @@ import java.util.Map;
 
 @Data
 public class GetMonthRecordsRespVO {
+
+    private String userId;
     /**
      * 月总工时
      */

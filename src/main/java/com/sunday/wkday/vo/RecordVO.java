@@ -32,4 +32,6 @@ public class RecordVO {
      *   头像地址
      */
     private String avatarUrl;
+
+    private Boolean isAdmin;
 }

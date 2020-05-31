@@ -1,9 +1,10 @@
-package com.sunday.wkday.web;
+package com.sunday.wkday.controller;
 
 import com.sunday.wkday.entity.WkUser;
 import com.sunday.wkday.enums.BaseErrorCode;
 import com.sunday.wkday.exception.BaseException;
 import com.sunday.wkday.service.WkUserService;
+import com.sunday.wkday.vo.BaseReq;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractController {
@@ -30,5 +31,11 @@ public abstract class AbstractController {
             throw new BaseException(BaseErrorCode.NOT_LOGIN);
         }
         return user;
+    }
+
+    protected void checkAndSetUserInfo(BaseReq baseReq) {
+        WkUser user = getUser(baseReq.getUserToken());
+        baseReq.setUserId(user.getUserId());
+        baseReq.setUserName(user.getUserName());
     }
 }

@@ -1,26 +1,19 @@
-package com.sunday.wkday.web;
+package com.sunday.wkday.controller;
 
-import com.sunday.wkday.entity.WkOpLog;
 import com.sunday.wkday.entity.WkRecord;
 import com.sunday.wkday.entity.WkUser;
-import com.sunday.wkday.service.WkOpLogService;
 import com.sunday.wkday.service.WkRecordService;
 import com.sunday.wkday.service.WkUserService;
-import com.sunday.wkday.service.dto.CreateRecordReq;
-import com.sunday.wkday.service.dto.GetAllMonthRecordResp;
-import com.sunday.wkday.service.dto.GetMonthRecordsResp;
-import com.sunday.wkday.service.dto.RecordDetail;
+import com.sunday.wkday.service.dto.*;
 import com.sunday.wkday.util.NumberUtil;
 import com.sunday.wkday.util.ResponseBuilder;
 import com.sunday.wkday.vo.*;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,29 +66,8 @@ public class RecordController extends AbstractController {
     @RequestMapping(value = "/getRecordList", method = RequestMethod.POST)
     @ResponseBody
     public BaseResult<List<RecordVO>> getRecordList(@RequestBody @Valid GetRecordListReqVO req) {
-        List<WkRecord> wkRecords = wkRecordService.getWkRecord(req.getProjectNo(), req.getWkDate());
-        List<RecordVO> recordList = new ArrayList<>();
-        if (CollectionUtils.isEmpty(wkRecords)) {
-            return ResponseBuilder.success(recordList);
-        }
-        List<String> userIdList = wkRecords.stream().map(WkRecord::getUserId).collect(Collectors.toList());
-        Map<String, WkUser> userMap = wkUserService.getUserMap(userIdList);
-        for (WkRecord wkRecord: wkRecords) {
-            RecordVO recordVO = new RecordVO();
-            WkUser wkUser = userMap.get(wkRecord.getUserId());
-            if (wkUser != null) {
-                recordVO.setAvatarUrl(wkUser.getAvatarUrl());
-                recordVO.setUserName(wkUser.getUserName());
-            }
-            recordVO.setUserId(wkRecord.getUserId());
-            recordVO.setRemark(wkRecord.getRemark());
-            recordVO.setWkHour(NumberUtil.formatNum(wkRecord.getWkHour(), 1));
-            long wkHour = wkRecord.getWkHour().longValue();
-            Float rate = wkHour >= 8 ? 100f : wkHour / 8f * 100;
-            recordVO.setRate(rate);
-            recordList.add(recordVO);
-        }
-        return ResponseBuilder.success(recordList);
+
+        return ResponseBuilder.success(wkRecordService.getRecordList(req));
     }
 
     /**
@@ -106,13 +78,13 @@ public class RecordController extends AbstractController {
     @RequestMapping(value = "/getMonthRecords", method = RequestMethod.POST)
     @ResponseBody
     public BaseResult<GetMonthRecordsRespVO> getMonthRecords(@RequestBody @Valid GetMonthRecordsReqVO req) {
-        WkUser wkUser = getUser(req.getUserToken());
-        GetMonthRecordsResp monthRecords = wkRecordService.getMonthRecords(req.getProjectNo(), wkUser.getUserId(), req.getUserId(), req.getYear(), req.getMonth());
-        GetMonthRecordsRespVO resp = new GetMonthRecordsRespVO();
-        resp.setSumMonthHour(monthRecords.getSumMonthHour());
-        resp.setHourMap(monthRecords.getHourMap());
-        resp.setRemarkMap(monthRecords.getRemarkMap());
-        return ResponseBuilder.success(resp);
+        GetMonthRecordsReq getMonthRecordsReq = new GetMonthRecordsReq();
+        getMonthRecordsReq.setUserId(getUserId(req.getUserToken()));
+        getMonthRecordsReq.setQueryUserId(req.getUserId());
+        getMonthRecordsReq.setProjectNo(req.getProjectNo());
+        getMonthRecordsReq.setYear(req.getYear());
+        getMonthRecordsReq.setMonth(req.getMonth());
+        return ResponseBuilder.success(wkRecordService.getMonthRecords(getMonthRecordsReq));
     }
 
     /**

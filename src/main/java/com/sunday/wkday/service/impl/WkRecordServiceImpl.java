@@ -9,10 +9,11 @@ import com.sunday.wkday.service.WkProjectService;
 import com.sunday.wkday.service.WkRecordService;
 import com.sunday.wkday.service.WkUserService;
 import com.sunday.wkday.service.dto.*;
-import com.sunday.wkday.util.DataUtil;
-import com.sunday.wkday.util.DateUtil;
-import com.sunday.wkday.util.NumberUtil;
-import com.sunday.wkday.util.RandomUtil;
+import com.sunday.wkday.util.*;
+import com.sunday.wkday.vo.GetMonthRecordsReqVO;
+import com.sunday.wkday.vo.GetMonthRecordsRespVO;
+import com.sunday.wkday.vo.GetRecordListReqVO;
+import com.sunday.wkday.vo.RecordVO;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,25 +117,66 @@ public class WkRecordServiceImpl implements WkRecordService {
     }
 
     @Override
-    public GetMonthRecordsResp getMonthRecords(String projectNo, String loginUserId, String userId, Integer year, Integer month) {
+    public List<RecordVO> getRecordList(GetRecordListReqVO req) {
+
+        WkProject project = wkProjectService.getProject(req.getProjectNo());
+        List<String> adminList = DataUtil.getAdminList(project.getProjectAdmin(), project.getSubAdmin());
+
+        List<WkRecord> wkRecords = getWkRecord(req.getProjectNo(), req.getWkDate());
+        List<RecordVO> recordList = new ArrayList<>();
+        if (CollectionUtils.isEmpty(wkRecords)) {
+            return recordList;
+        }
+        List<String> userIdList = wkRecords.stream().map(WkRecord::getUserId).collect(Collectors.toList());
+        Map<String, WkUser> userMap = wkUserService.getUserMap(userIdList);
+
+        List<RecordVO> normalRecordList = new ArrayList<>();
+
+        for (WkRecord wkRecord: wkRecords) {
+            RecordVO recordVO = new RecordVO();
+            WkUser wkUser = userMap.get(wkRecord.getUserId());
+            if (wkUser != null) {
+                recordVO.setAvatarUrl(wkUser.getAvatarUrl());
+                recordVO.setUserName(wkUser.getUserName());
+            }
+            recordVO.setUserId(wkRecord.getUserId());
+            recordVO.setRemark(wkRecord.getRemark());
+            recordVO.setWkHour(NumberUtil.formatNum(wkRecord.getWkHour(), 1));
+            long wkHour = wkRecord.getWkHour().longValue();
+            Float rate = wkHour >= 8 ? 100f : wkHour / 8f * 100;
+            recordVO.setRate(rate);
+            boolean isAdmin = adminList.contains(wkRecord.getUserId());
+            recordVO.setIsAdmin(isAdmin);
+            if (isAdmin) {
+                recordList.add(recordVO);
+            } else {
+                normalRecordList.add(recordVO);
+            }
+        }
+        recordList.addAll(normalRecordList);
+        return recordList;
+    }
+
+    @Override
+    public GetMonthRecordsRespVO getMonthRecords(GetMonthRecordsReq req) {
         WkRecordExample example = new WkRecordExample();
         WkRecordExample.Criteria criteria = example.createCriteria();
-        Date date = DateUtil.parseDate(year + "-" + month + "-01");
-        criteria.andUserIdEqualTo(userId)
-                .andProjectNoEqualTo(projectNo)
+        Date date = DateUtil.parseDate(req.getYear() + "-" + req.getMonth() + "-01");
+        criteria.andUserIdEqualTo(req.getQueryUserId())
+                .andProjectNoEqualTo(req.getProjectNo())
                 .andWkDateGreaterThanOrEqualTo(DateUtil.getDate(date))
                 .andWkDateLessThan(DateUtil.getDate(DateUtils.addMonths(date, 1)));
         List<WkRecord> wkRecords = wkRecordMapper.selectByExample(example);
 
-        GetMonthRecordsResp resp = new GetMonthRecordsResp();
+        GetMonthRecordsRespVO resp = new GetMonthRecordsRespVO();
         if (CollectionUtils.isEmpty(wkRecords)) {
             resp.setSumMonthHour("0");
             resp.setHourMap(new HashMap<>());
             return resp;
         }
 
-        WkProject wkProject = wkProjectService.getProject(projectNo);
-        boolean isAdmin = DataUtil.checkAdmin(loginUserId, wkProject.getProjectAdmin(), wkProject.getSubAdmin());
+        WkProject wkProject = wkProjectService.getProject(req.getProjectNo());
+        boolean isAdmin = DataUtil.checkAdmin(req.getUserId(), wkProject.getProjectAdmin(), wkProject.getSubAdmin());
 
         Map<Integer, String> hourMap = new HashMap<>();
         Map<Integer, String> remarkMap = new HashMap<>();
@@ -145,10 +187,11 @@ public class WkRecordServiceImpl implements WkRecordService {
                 hourMap.put(day, NumberUtil.formatNum(wkRecord.getWkHour(), 1));
                 count = count.add(wkRecord.getWkHour());
             }
-            if (StringUtils.isNotBlank(wkRecord.getRemark()) && (isAdmin || loginUserId.equals(wkRecord.getUserId()))) {
+            if (StringUtils.isNotBlank(wkRecord.getRemark()) && (isAdmin || req.getUserId().equals(wkRecord.getUserId()))) {
                 remarkMap.put(day, wkRecord.getRemark());
             }
         }
+        resp.setUserId(req.getUserId());
         resp.setHourMap(hourMap);
         resp.setRemarkMap(remarkMap);
         resp.setSumMonthHour(NumberUtil.formatNum(count, 1));

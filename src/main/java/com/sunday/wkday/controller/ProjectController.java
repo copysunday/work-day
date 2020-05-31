@@ -1,4 +1,4 @@
-package com.sunday.wkday.web;
+package com.sunday.wkday.controller;
 
 
 import com.sunday.wkday.entity.WkOpLog;
@@ -18,7 +18,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -69,6 +68,18 @@ public class ProjectController extends AbstractController {
         String userId = getUserId(req.getUserToken());
         boolean result = wkProjectService.setSubAdmin(userId, req.getProjectNo(), req.getSubAdmin(), req.getAdminSetFlag());
         return ResponseBuilder.success(result);
+    }
+
+    @RequestMapping(value = "/quitProject", method = RequestMethod.POST)
+    public BaseResult<Boolean> quitProject(@RequestBody @Valid QuitProjectReq req) {
+        checkAndSetUserInfo(req);
+        return ResponseBuilder.success(wkProjectService.quitProject(req));
+    }
+
+    @RequestMapping(value = "/deleteProject", method = RequestMethod.POST)
+    public BaseResult<Boolean> deleteProject(@RequestBody @Valid DeleteProjectReqVO req) {
+        checkAndSetUserInfo(req);
+        return ResponseBuilder.success(wkProjectService.deleteProject(req));
     }
 
     /**

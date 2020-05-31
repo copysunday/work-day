@@ -3,8 +3,12 @@ package com.sunday.wkday.service;
 import com.sunday.wkday.entity.WkRecord;
 import com.sunday.wkday.service.dto.CreateRecordReq;
 import com.sunday.wkday.service.dto.GetAllMonthRecordResp;
+import com.sunday.wkday.service.dto.GetMonthRecordsReq;
 import com.sunday.wkday.service.dto.GetMonthRecordsResp;
+import com.sunday.wkday.vo.*;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.util.List;
 
 public interface WkRecordService {
@@ -24,14 +28,17 @@ public interface WkRecordService {
     int createRecord(CreateRecordReq req);
 
     /**
-     * 个人月记录
-     * @param projectNo
-     * @param userId
-     * @param year
-     * @param month
+     * 工时列表
+     * @param req
      * @return
      */
-    GetMonthRecordsResp getMonthRecords(String projectNo, String loginUserId, String userId, Integer year, Integer month);
+    List<RecordVO> getRecordList(GetRecordListReqVO req);
+
+    /**
+     * 个人月记录
+     * @return
+     */
+    GetMonthRecordsRespVO getMonthRecords(GetMonthRecordsReq req);
 
     /**
      *

@@ -26,6 +26,7 @@
       <arg column="sub_admin" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="project_no" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_type" javaType="java.lang.Byte" jdbcType="TINYINT" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
@@ -50,7 +51,9 @@
   <select id="selectProjectDetail" resultMap="ProResultMap">
     select distinct(p.project_no), p.project_name, p.id as project_id, p.project_admin, p.sub_admin
     from wk_project p left join wk_member m on m.project_no=p.project_no
-    where p.project_status!=-1 and (m.user_id=#{userId,jdbcType=VARCHAR} or p.project_admin=#{userId,jdbcType=VARCHAR} )
+    where p.project_status in (0, 1)
+    and ( (m.user_id=#{userId,jdbcType=VARCHAR} and m.user_type in (0, 1) )
+          or p.project_admin=#{userId,jdbcType=VARCHAR} )
     <if test="minId !=null">
       and p.id &lt; #{minId,jdbcType=INTEGER}
     </if>
@@ -59,7 +62,7 @@
   </select>
 
   <select id="selectProjectDetailByNo" resultMap="ProResultMap2">
-    select p.project_no, p.project_name, p.id as project_id, p.project_admin, p.create_time, m.user_id, p.sub_admin
+    select p.project_no, p.project_name, p.id as project_id, p.project_admin, p.create_time, m.user_id, p.sub_admin, m.user_type
     from wk_project p left join wk_member m on m.project_no=p.project_no
     where p.project_no=#{projectNo,jdbcType=VARCHAR}
   </select>

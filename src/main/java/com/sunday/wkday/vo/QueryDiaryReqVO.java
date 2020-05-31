@@ -1,27 +1,18 @@
 package com.sunday.wkday.vo;
 
 import lombok.Data;
-import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Map;
 
+/**
+ * @author sunyangming
+ * @date 2020/5/16
+ */
 @Data
-public class GetMonthRecordsReqVO {
-    /**
-     * 操作人token
-     */
-    @NotBlank
-    private String userToken;
-    /**
-     * 查询的userId
-     */
-    @NotBlank
-    private String userId;
-    /**
-     * 项目ID
-     */
+public class QueryDiaryReqVO extends BaseReq {
+
+
     @NotBlank
     private String projectNo;
 
