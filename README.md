@@ -44,14 +44,24 @@ To start:
 
 # The demo
 
-![image](https://github.com/copysunday/my-image/blob/master/qrcode.jpg)
-![image](https://github.com/copysunday/my-image/blob/master/a1.jpg)
-![image](https://github.com/copysunday/my-image/blob/master/a2.jpg)
-![image](https://github.com/copysunday/my-image/blob/master/a3.jpg)
-![image](https://github.com/copysunday/my-image/blob/master/a4.jpg)
+<table>
+    <tr>
+        <td ><center><img src="https://github.com/copysunday/my-image/blob/master/qrcode.jpg"></center></td>
+        <td ><center><img src="https://github.com/copysunday/my-image/blob/master/a1.jpg" ></center></td>
+        <td ><center><img src="https://github.com/copysunday/my-image/blob/master/a2.jpg"></center></td>
+    </tr>
+    
+    <tr>
+        <td ><center><img src="https://github.com/copysunday/my-image/blob/master/a3.jpg"></center></td>
+        <td ><center><img src="https://github.com/copysunday/my-image/blob/master/a4.jpg"></center></td>
+        <td ><center></center></td>
+    </tr>
+</table>
 
 # License
 
 This repo is using the MIT LICENSE.
 
 You can find it in the file [LICENSE](LICENSE)
+
+
