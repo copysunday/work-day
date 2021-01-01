@@ -22,6 +22,10 @@ export WX_APPID=***
 # Demo
 
 ![image](https://github.com/copysunday/my-image/blob/master/qrcode.jpg)
+![image](https://github.com/copysunday/my-image/blob/master/a1.jpg)
+![image](https://github.com/copysunday/my-image/blob/master/a2.jpg)
+![image](https://github.com/copysunday/my-image/blob/master/a3.jpg)
+![image](https://github.com/copysunday/my-image/blob/master/a4.jpg)
 
 # License
 

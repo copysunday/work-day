@@ -58,7 +58,7 @@ public class DiaryServiceImpl implements DiaryService {
         criteria.andUserIdEqualTo(req.getUserId())
                 .andProjectNoEqualTo(req.getProjectNo())
                 .andWkDateGreaterThanOrEqualTo(DateUtil.getDate(date))
-                .andWkDateLessThan(DateUtil.getDate(DateUtils.addMonths(date, 1)));
+                .andWkDateLessThan(DateUtil.getDate(DateUtil.addMonths(date, 1)));
         wkDiaryExample.setOrderByClause("wk_date desc");
 
         QueryDiaryRespVO resp = new QueryDiaryRespVO();
