@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -67,9 +68,17 @@ public class DateUtil {
         }
     }
 
+    public static Date addMonths(Date date, int amount) {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Shanghai"));
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, amount);
+
+        return calendar.getTime();
+    }
+
     public static void main(String[] args) {
         Date date = parseDate("2020-2-1");
-        Date date1 = DateUtils.addMonths(date, 1);
+        Date date1 = DateUtil.addMonths(date, 1);
         System.out.println(getDateTime(date1));
         System.out.println(Integer.parseInt("09"));
         int hour = Integer.parseInt("2020-02-01".substring(8));

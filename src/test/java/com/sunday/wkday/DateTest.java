@@ -18,7 +18,7 @@ public class DateTest {
         WkRecordExample.Criteria criteria = example.createCriteria();
         Date date = DateUtil.parseDate("2020-12-01");
         System.out.println(DateUtil.getDate(date));
-        System.out.println(DateUtil.getDate(DateUtils.addMonths(date, 1)));
+        System.out.println(DateUtil.getDate(DateUtil.addMonths(date, 1)));
 //
 //        criteria.andUserIdEqualTo(req.getQueryUserId())
 //                .andProjectNoEqualTo(req.getProjectNo())

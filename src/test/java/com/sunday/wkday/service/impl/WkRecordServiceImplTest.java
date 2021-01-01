@@ -50,15 +50,8 @@ class WkRecordServiceImplTest {
 
     @Test
     void testMonth() {
-
-        //[GetMonthRecordsReqVO(userToken=0620773162dc4362a00103f7da08f093,
-        // userId=2d018a15eaa14ee3b81f1e7d2ae211fb,
-        // projectNo=19de4b2a6a144ff885be341231d628d6, year=2020, month=12)],result:BaseResult(code=0000, message=success,
-        // data=GetMonthRecordsRespVO(userId=2d018a15eaa14ee3b81f1e7d2ae211fb, sumMonthHour=30.0, hourMap={22=5.0, 12=5.0, 30=20.0}, remarkMap={}))
-        String s = "{\"userToken\":\"0620773162dc4362a00103f7da08f093\",\"userId\":\"2d018a15eaa14ee3b81f1e7d2ae211fb\"," +
-                "\"year\":\"2020\",\"month\":\"12\",\"projectNo\":\"19de4b2a6a144ff885be341231d628d6\"}";
+        String s = "{\"userToken\":\"2479c9e44f9642ef9e2cc7b4aa2bafa6\",\"userId\":\"2d018a15eaa14ee3b81f1e7d2ae211fb\",\"year\":\"2020\",\"month\":\"5\",\"projectNo\":\"19de4b2a6a144ff885be341231d628d6\"}";
         GetMonthRecordsReq getMonthRecordsReqVO = JSON.parseObject(s, GetMonthRecordsReq.class);
-        getMonthRecordsReqVO.setQueryUserId("2d018a15eaa14ee3b81f1e7d2ae211fb");
         GetMonthRecordsRespVO monthRecords = wkRecordService.getMonthRecords(getMonthRecordsReqVO);
         System.out.println(monthRecords);
     }
