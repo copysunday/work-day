@@ -165,7 +165,7 @@ public class WkRecordServiceImpl implements WkRecordService {
         criteria.andUserIdEqualTo(req.getQueryUserId())
                 .andProjectNoEqualTo(req.getProjectNo())
                 .andWkDateGreaterThanOrEqualTo(DateUtil.getDate(date))
-                .andWkDateLessThan(DateUtil.getDate(DateUtils.addMonths(date, 1)));
+                .andWkDateLessThan(DateUtil.getDate(DateUtil.addMonths(date, 1)));
         List<WkRecord> wkRecords = wkRecordMapper.selectByExample(example);
 
         GetMonthRecordsRespVO resp = new GetMonthRecordsRespVO();
@@ -205,7 +205,7 @@ public class WkRecordServiceImpl implements WkRecordService {
         Date date = DateUtil.parseDate(year + "-" + month + "-01");
         criteria.andProjectNoEqualTo(projectNo)
                 .andWkDateGreaterThanOrEqualTo(DateUtil.getDate(date))
-                .andWkDateLessThan(DateUtil.getDate(DateUtils.addMonths(date, 1)));
+                .andWkDateLessThan(DateUtil.getDate(DateUtil.addMonths(date, 1)));
         example.setOrderByClause("user_id asc");
         List<WkRecord> wkRecords = wkRecordMapper.selectByExample(example);
         GetAllMonthRecordResp resp = new GetAllMonthRecordResp();
