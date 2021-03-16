@@ -183,7 +183,7 @@ public class WkRecordServiceImpl implements WkRecordService {
         BigDecimal count = new BigDecimal("0");
         for (WkRecord wkRecord : wkRecords) {
             int day = Integer.parseInt(wkRecord.getWkDate().substring(8));
-            if (BigDecimal.ZERO.compareTo(wkRecord.getWkHour()) <= 0) {
+            if (BigDecimal.ZERO.compareTo(wkRecord.getWkHour()) < 0) {
                 hourMap.put(day, NumberUtil.formatNum(wkRecord.getWkHour(), 1));
                 count = count.add(wkRecord.getWkHour());
             }
